@@ -48,15 +48,32 @@ function get_url(with_line)
     return url_to_current_file
 end
 
-function open_in_browser(url)
+local function open_command()
+    local os_name = vim.loop.os_uname().sysname
+    if os_name == "Linux" then
+        return "xdg-open"
+    elseif os_name == "Darwin" then
+        return "open"
+    elseif os_name == "Windows_NT" then
+        return "start"
+    else
+        print("Unsupported OS: " .. os_name)
+        return nil
+    end
+end
+
+local function open_in_browser(url)
     if url then
-        vim.fn.jobstart({ 'xdg-open', url }, { detach = true })
+        local cmd = open_command()
+        if cmd then
+            vim.fn.jobstart({cmd, url}, {detach = true})
+        end
     else
         print('Could not open file')
     end
 end
 
-function yank_to_register(register, url)
+local function yank_to_register(register, url)
     local cmd = string.format('let @%s = "%s"', register, url)
     vim.cmd(cmd)
     print(url, "yanked to register '" .. register .. "'")
