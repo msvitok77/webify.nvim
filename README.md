@@ -15,7 +15,7 @@ Often when working on Neovim I have the need to jump to the current file in the 
 ## Packer
 
 ```
-use "pabloariasal/webify.nvim"
+use "msvitok77/webify.nvim"
 ```
 
 # Usage
